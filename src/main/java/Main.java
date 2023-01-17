@@ -3,6 +3,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -194,6 +196,75 @@ public class Main {
 				choicesFunction1();
 				
 				
+				break;
+			case 6:
+				System.out.println("==========Read From Table===================");
+				String sqlDB = " SELECT * FROM Root ";
+
+				Class.forName("com.mysql.jdbc.Driver");
+				String url111 = "jdbc:mysql://localhost:3306/maveindbms2";
+				String username = "root";
+				String password = "root";
+				try {
+
+					Connection conn111 = DriverManager.getConnection(url111, username, password);
+					Statement st = conn111.createStatement();
+					ResultSet m = st.executeQuery(sqlDB);
+					if (m.next()) {
+						do {
+							System.out.println("id : " + m.getInt(1));
+							System.out.println("name_common :" + m.getString(2));
+							System.out.println("name_official :" + m.getString(3));
+							System.out.println("tld :" + m.getString(4));
+							System.out.println("cca2 :" + m.getString(5));
+
+							System.out.println("ccn3 :" + m.getString(6));
+
+							System.out.println("cca3 :" + m.getString(7));
+
+							System.out.println("*********************************");
+						} while (m.next());
+					} else {
+						System.out.println("No such user id is already registered");
+					}
+					conn111.close();
+				} catch (Exception ex) {
+					System.err.println(ex);
+				}
+				choicesFunction1();
+				break;
+				
+			case 7:
+				System.out.println("==========Update From Table Web===================");
+				System.out.println("plz enter id that want to update");
+				Scanner sc1 = new Scanner(System.in); // System.in is a standard input stream
+				int id = sc1.nextInt();
+				System.out.println("plz enter new  name");
+				String name_common = sc1.next();
+				String sqlDB1 = " update Root set name_common = ? where id =  " + id;
+
+				Class.forName("com.mysql.jdbc.Driver");
+				String url1111 = "jdbc:mysql://localhost:3306/maveindbms2";
+				String username1 = "root";
+				String password1 = "root";
+				try (
+						// gets connection with database
+						Connection connection = DriverManager.getConnection(url1111, username1, password1);
+
+						// sends queries and receives results
+						PreparedStatement statement = connection.prepareStatement(sqlDB1);) {
+					// this way to prevent sql injection
+					statement.setString(id, name_common);
+
+					int count = statement.executeUpdate();
+
+					System.out.print(" updated rows is " + id + ".");
+				} catch (SQLException e) {
+					// some logic depending on scenario
+					// maybe LOGGER.log(e.getMessage()) and "result false"
+					e.printStackTrace();
+				}
+				choicesFunction1();
 				break;
 			}
 		} while (true);
