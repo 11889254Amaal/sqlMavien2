@@ -266,7 +266,52 @@ public class Main {
 				}
 				choicesFunction1();
 				break;
+				
+			case 8:
+				System.out.println("==========DELETE From Table Web===================");
+
+				System.out.println("plz enter id that want to delete");
+				Scanner sc11 = new Scanner(System.in); // System.in is a standard input stream
+				int id1 = sc11.nextInt();
+
+				Connection conn111 = null;
+				Statement stmt = null;
+				try {
+					try {
+						Class.forName("com.mysql.jdbc.Driver");
+					} catch (Exception e) {
+						System.out.println(e);
+					}
+					conn111 = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/maveindbms2", "root",
+							"root");
+					System.out.println("Connection is created successfully:");
+					stmt = (Statement) conn111.createStatement();
+					String query1 = "delete from  root " + "where id=" + id1;
+					stmt.executeUpdate(query1);
+					System.out.println("Record is deleted from the table successfully..................");
+				} catch (SQLException excep) {
+					excep.printStackTrace();
+				} catch (Exception excep) {
+					excep.printStackTrace();
+				} finally {
+					try {
+						if (stmt != null)
+							conn111.close();
+					} catch (SQLException se) {
+					}
+					try {
+						if (conn111 != null)
+							conn111.close();
+					} catch (SQLException se) {
+						se.printStackTrace();
+					}
+				}
+				System.out.println("Please check it in the MySQL Table. Record is now deleted.......");
+
+				choicesFunction1();
+				break;
 			}
+			
 		} while (true);
 	}
 }
